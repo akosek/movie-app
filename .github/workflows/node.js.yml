@@ -1,0 +1,44 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Publish to release channel "test"
+
+on:
+  push:
+    branches: [ dev ]
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: Manual triggered build
+
+jobs:
+  build:
+    env:
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Cache
+      uses: actions/cache@v2.1.1
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14.x
+
+    - name: Initialize Expo
+      uses: expo/expo-github-action@v5
+      with:
+        expo-version: 3.x
+        expo-token: ${{ secrets.EXPO_TOKEN }}
+        expo-cache: true
+
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Expo Publish
+      run: expo publish --release-channel test
