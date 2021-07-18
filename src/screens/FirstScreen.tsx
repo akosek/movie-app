@@ -100,7 +100,7 @@ export function FirstScreen(): React.ReactElement {
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollBox}>
                 <View style={styles.movieList}>
-                    {testData?.map((item, key) => {
+                    {movieList?.map((item, key) => {
                         return (
                             <MovieCard
                                 id={item.id}
