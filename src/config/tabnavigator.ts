@@ -7,8 +7,8 @@ import { hasNotch } from '../utils/device';
 
 export const tabLabels = {
     FIRST_SCREEN: 'Top',
-    SECOND_SCREEN: 'Serch',
-    THIRD_SCREEN: 'Watch',
+    SECOND_SCREEN: 'Favourites',
+    THIRD_SCREEN: 'WatchList',
     FOURTH_SCREEN: 'Favourite',
 };
 

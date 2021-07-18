@@ -6,6 +6,7 @@ import movies, { TMoviesState } from './ducks/movies';
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
+    whitelist: ['movieFavList', 'movieWatchList'],
 };
 
 const appReducer = persistCombineReducers(persistConfig, {

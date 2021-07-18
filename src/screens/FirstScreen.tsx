@@ -1,7 +1,7 @@
-import React, { useEffects } from 'react';
+import React, { useEffect } from 'react';
 
 // UI & Styles
-import { SafeAreaView, View, ScrollView } from 'react-native';
+import { SafeAreaView, View, ScrollView, Alert } from 'react-native';
 import MovieCard from '../components/MovieCard/MovieCard';
 import styles from './firstScreenStyles';
 
@@ -9,7 +9,7 @@ import styles from './firstScreenStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import { TMovieItem } from '../redux/ducks/movies';
 import { RootState } from '../redux/rootReducer';
-import { getTopMovieData } from '../redux/ducks/movies';
+import { getTopMovieData, addFavMovies, addToWatchList } from '../redux/ducks/movies';
 
 //TEMPORARY
 const testData: any[] = [
@@ -72,6 +72,9 @@ const testData: any[] = [
 
 export function FirstScreen(): React.ReactElement {
     const { movieList } = useSelector<RootState, TMovieItem[]>((state) => state.movies);
+    const { movieFavList } = useSelector<RootState, TMovieItem>((state) => state.movies.movieFav);
+    const { movieWatchList } = useSelector<RootState, TMovieItem[]>((state) => state.movies);
+
     const dispatch = useDispatch();
 
     const fetchData = () => {
@@ -81,6 +84,17 @@ export function FirstScreen(): React.ReactElement {
     useEffect(() => {
         fetchData();
     }, []);
+
+    const addToFavorites = (item: TMovieItem) => {
+        dispatch(addFavMovies(item));
+        console.log('added Fav item', item);
+    };
+
+    const addToWatch = (item: TMovieItem) => {
+        dispatch(addToWatchList(item));
+        console.log('added Watch List item', item);
+        console.log('movie List to watch', movieWatchList);
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -98,6 +112,8 @@ export function FirstScreen(): React.ReactElement {
                                 image={{
                                     uri: item.image,
                                 }}
+                                onFavAdd={() => addToFavorites(item)}
+                                onWatchPress={() => addToWatch(item)}
                             />
                         );
                     })}

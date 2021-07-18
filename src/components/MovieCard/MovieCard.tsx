@@ -13,6 +13,8 @@ export type Props = {
     rating?: string;
     year?: string;
     crew?: string;
+    onFavAdd?: () => void;
+    onWatchPress?: () => void;
 };
 
 export default function MovieCard(props: Props) {
@@ -47,8 +49,16 @@ export default function MovieCard(props: Props) {
                     pellentesque. Et odio pellentesque diam volutpat commodo sed egestas egestas fringilla.
                 </Text>
 
-                <Button title="Favourite" type="clear" icon={<Icon name="arrow-right" size={30} color="blue" />} />
                 <Button
+                    title="Favourite"
+                    type="clear"
+                    onLongPress={props.onFavAdd}
+                    onPress={props.onFavAdd}
+                    icon={<Icon name="arrow-right" size={30} color="blue" />}
+                />
+                <Button
+                    onLongPress={props.onWatchPress}
+                    onPress={props.onWatchPress}
                     icon={{
                         name: 'arrow-right',
                         size: 15,

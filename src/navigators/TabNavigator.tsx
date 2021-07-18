@@ -10,7 +10,6 @@ import { ROUTES } from '../config/routes';
 import { FirstScreen } from '../screens/FirstScreen';
 import { SecondScreenStack } from './stacks/SecondScreenStack';
 import { SygdomDoedStack } from './stacks/ThirdScreenStack';
-import { FourthScreenStack } from './stacks/FourthScreenStack';
 
 // Navigators
 const Tab = createBottomTabNavigator();
@@ -30,21 +29,17 @@ const TabNavigator = () => {
             />
             <Tab.Screen
                 listeners={() => ({ tabPress: onPressTab })}
-                options={{ tabBarLabel: tabLabels.SECOND_SCREEN }}
-                name={ROUTES.SECOND_SCREEN_STACK}
-                component={SecondScreenStack}
-            />
-            <Tab.Screen
-                listeners={() => ({ tabPress: onPressTab })}
                 options={{ tabBarLabel: tabLabels.THIRD_SCREEN }}
                 name={ROUTES.THIRD_SCREEN_STACK}
                 component={SygdomDoedStack}
             />
             <Tab.Screen
                 listeners={() => ({ tabPress: onPressTab })}
-                options={{ tabBarLabel: tabLabels.FOURTH_SCREEN }}
-                name={ROUTES.FOURTH_SCREEN_STACK}
-                component={FourthScreenStack}
+                options={{
+                    tabBarLabel: tabLabels.SECOND_SCREEN,
+                }}
+                name={ROUTES.SECOND_SCREEN_STACK}
+                component={SecondScreenStack}
             />
         </Tab.Navigator>
     );
