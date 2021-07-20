@@ -1,5 +1,5 @@
 import { createAction, ActionType, getType } from 'typesafe-actions';
-import { API_URL_TOP, API_URL_POPULAR } from '../../api';
+import { API_URL_TOP, API_URL_POPULAR, MOVIE_DETAILS } from '../../api';
 import { AppThunk } from '../../types';
 
 import axios from 'axios';
@@ -9,12 +9,14 @@ export const setTopMovies = createAction('setTopMovies/SET_TOP_MOVIES')<TMovieIt
 export const addFavMovies = createAction('addFavMovies/ADD_FAV_MOVIES')<TMovieDetails>();
 export const removeFromFav = createAction('removeFromFav/REMOVE_FROM_FAV')<TMovieItem>();
 export const addToWatchList = createAction('addToWatchList/ADD_TO_WATCHLIST')<TMovieItem>();
+export const setMovieDetails = createAction('setMovieDetails/SET_MOVIE_DETAILS')<TMovieDetails>();
 
 const actionCreators = {
     setTopMovies,
     addFavMovies,
     removeFromFav,
     addToWatchList,
+    setMovieDetails,
 };
 
 // Inistial state
@@ -23,6 +25,7 @@ export type TMoviesState = Readonly<{
     movieFav: TMovieDetails;
     movieFavList: TMovieDetails[];
     movieWatchList: TMovieDetails[];
+    movieDetail: TMovieDetails;
 }>;
 
 const initialState: TMoviesState = {
@@ -46,6 +49,7 @@ export type TMovieDetails = {
     id: string;
     title: string;
     image: string;
+    plot?: string;
 };
 
 // Reducer
@@ -63,6 +67,11 @@ export default function reducer(state: TMoviesState = initialState, action: TMov
             };
         case getType(addToWatchList):
             return { ...state, movieWatchList: [...state.movieWatchList, action.payload] };
+        case getType(setMovieDetails):
+            return {
+                ...state,
+                movieDetail: action.payload,
+            };
         default:
             return state;
     }
@@ -79,6 +88,21 @@ export const getTopMovieData = (): AppThunk => {
             })
             .catch(function (error) {
                 console.error(error);
+            });
+    };
+};
+
+export const getMovieDetails = (id: string): AppThunk => {
+    return function (dispatch) {
+        let url = `${MOVIE_DETAILS}` + `${id}`;
+        let options: { method: string; url: string } = { method: 'GET', url: url };
+        axios
+            .request(options)
+            .then(function (response) {
+                dispatch(setMovieDetails(response));
+            })
+            .catch(function (error) {
+                console.log(error);
             });
     };
 };

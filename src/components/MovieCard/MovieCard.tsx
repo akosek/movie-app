@@ -13,8 +13,10 @@ export type Props = {
     rating?: string;
     year?: string;
     crew?: string;
+    plot?: string;
     onFavAdd?: () => void;
     onWatchPress?: () => void;
+    onCardPress: () => void;
 };
 
 export default function MovieCard(props: Props) {
@@ -24,13 +26,28 @@ export default function MovieCard(props: Props) {
         setVisible(!visible);
     };
 
+    const pressCard = () => {
+        setVisible(true);
+        {
+            props.onCardPress();
+        }
+    };
+
     return (
         <>
-            <TouchableOpacity style={styles.movieCard} onPress={() => setVisible(true)}>
+            <TouchableOpacity
+                style={styles.movieCard}
+                onPress={() => {
+                    pressCard();
+                }}
+            >
                 <Image source={props.image} resizeMode="cover" style={styles.coverImage} />
                 <Text style={styles.movieTitle}>{props.title}</Text>
                 <View style={styles.infoBox}>
-                    <Text>{props.rating}</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Icon name="star" type="ionicon" size={16} color={'orange'} />
+                        <Text>{props.rating}</Text>
+                    </View>
                     <Text>{props.year}</Text>
                 </View>
             </TouchableOpacity>
@@ -42,13 +59,7 @@ export default function MovieCard(props: Props) {
                         <Text>{props.crew}</Text>
                     </View>
                 </View>
-                <Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Eget sit amet tellus cras. Convallis posuere morbi leo urna molestie at elementum. Blandit turpis cursus in hac
-                    habitasse platea. Tellus mauris a diam maecenas sed. Netus et malesuada fames ac turpis egestas. A iaculis at erat
-                    pellentesque. Et odio pellentesque diam volutpat commodo sed egestas egestas fringilla.
-                </Text>
-
+                <Text style={styles.plotText}>{props.plot}</Text>
                 <Button
                     title="Favourite"
                     type="clear"

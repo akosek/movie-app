@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 
 // UI & Styles
-import { SafeAreaView, View, ScrollView, Alert } from 'react-native';
+import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
 import MovieCard from '../components/MovieCard/MovieCard';
 import styles from './firstScreenStyles';
 
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
-import { TMovieItem } from '../redux/ducks/movies';
+import { TMovieItem, TMovieDetails } from '../redux/ducks/movies';
 import { RootState } from '../redux/rootReducer';
-import { getTopMovieData, addFavMovies, addToWatchList } from '../redux/ducks/movies';
+import { getTopMovieData, addFavMovies, addToWatchList, getMovieDetails } from '../redux/ducks/movies';
 
 //TEMPORARY
 const testData: any[] = [
@@ -23,6 +23,7 @@ const testData: any[] = [
         rank: '3',
         title: 'The Godfather: Part II',
         year: '1974',
+        plot: 'The world is stunned when a group of time travelers arrive from the year 2051 to deliver an urgent message: Thirty years in the future, mankind is losing a global war against a deadly alien species. The only hope for survival is for soldiers and civilians from the present to be transported to the future and join the fight. Among those recruited is high school teacher and family man Dan Forester (Chris Pratt). Determined to save the world for his young daughter, Dan teams up with a brilliant scientist (Yvonne Strahovski) and his estranged father (J.K. Simmons) in a desperate quest to rewrite the fate of the planet.',
     },
     {
         crew: 'Christopher Nolan (dir.), Christian Bale, Heath Ledger',
@@ -34,6 +35,7 @@ const testData: any[] = [
         rank: '4',
         title: 'The Dark Knight',
         year: '2008',
+        plot: 'The world is stunned when a group of time travelers arrive from the year 2051 to deliver an urgent message: Thirty years in the future, mankind is losing a global war against a deadly alien species. The only hope for survival is for soldiers and civilians from the present to be transported to the future and join the fight. Among those recruited is high school teacher and family man Dan Forester (Chris Pratt). Determined to save the world for his young daughter, Dan teams up with a brilliant scientist (Yvonne Strahovski) and his estranged father (J.K. Simmons) in a desperate quest to rewrite the fate of the planet.',
     },
     {
         crew: 'Sidney Lumet (dir.), Henry Fonda, Lee J. Cobb',
@@ -45,6 +47,7 @@ const testData: any[] = [
         rank: '5',
         title: '12 Angry Men',
         year: '1957',
+        plot: 'The world is stunned when a group of time travelers arrive from the year 2051 to deliver an urgent message: Thirty years in the future, mankind is losing a global war against a deadly alien species. The only hope for survival is for soldiers and civilians from the present to be transported to the future and join the fight. Among those recruited is high school teacher and family man Dan Forester (Chris Pratt). Determined to save the world for his young daughter, Dan teams up with a brilliant scientist (Yvonne Strahovski) and his estranged father (J.K. Simmons) in a desperate quest to rewrite the fate of the planet.',
     },
     {
         crew: 'Steven Spielberg (dir.), Liam Neeson, Ralph Fiennes',
@@ -56,6 +59,7 @@ const testData: any[] = [
         rank: '6',
         title: "Schindler's List",
         year: '1993',
+        plot: 'The world is stunned when a group of time travelers arrive from the year 2051 to deliver an urgent message: Thirty years in the future, mankind is losing a global war against a deadly alien species. The only hope for survival is for soldiers and civilians from the present to be transported to the future and join the fight. Among those recruited is high school teacher and family man Dan Forester (Chris Pratt). Determined to save the world for his young daughter, Dan teams up with a brilliant scientist (Yvonne Strahovski) and his estranged father (J.K. Simmons) in a desperate quest to rewrite the fate of the planet.',
     },
     {
         crew: 'Peter Jackson (dir.), Elijah Wood, Viggo Mortensen',
@@ -67,14 +71,14 @@ const testData: any[] = [
         rank: '7',
         title: 'The Lord of the Rings: The Return of the King',
         year: '2003',
+        plot: 'The world is stunned when a group of time travelers arrive from the year 2051 to deliver an urgent message: Thirty years in the future, mankind is losing a global war against a deadly alien species. The only hope for survival is for soldiers and civilians from the present to be transported to the future and join the fight. Among those recruited is high school teacher and family man Dan Forester (Chris Pratt). Determined to save the world for his young daughter, Dan teams up with a brilliant scientist (Yvonne Strahovski) and his estranged father (J.K. Simmons) in a desperate quest to rewrite the fate of the planet.',
     },
 ];
 
 export function FirstScreen(): React.ReactElement {
     const { movieList } = useSelector<RootState, TMovieItem[]>((state) => state.movies);
-    const { movieFavList } = useSelector<RootState, TMovieItem>((state) => state.movies.movieFav);
     const { movieWatchList } = useSelector<RootState, TMovieItem[]>((state) => state.movies);
-
+    const { movieDetail } = useSelector<RootState, TMovieDetails>((state) => state.movies);
     const dispatch = useDispatch();
 
     const fetchData = () => {
@@ -92,15 +96,18 @@ export function FirstScreen(): React.ReactElement {
 
     const addToWatch = (item: TMovieItem) => {
         dispatch(addToWatchList(item));
-        console.log('added Watch List item', item);
-        console.log('movie List to watch', movieWatchList);
+    };
+
+    const openMovieModal = (id: string) => {
+        dispatch(getMovieDetails(id));
+        console.log('moje ploooty', movieDetail?.data.plot);
     };
 
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollBox}>
                 <View style={styles.movieList}>
-                    {movieList?.map((item, key) => {
+                    {testData?.map((item, key) => {
                         return (
                             <MovieCard
                                 id={item.id}
@@ -112,7 +119,12 @@ export function FirstScreen(): React.ReactElement {
                                 image={{
                                     uri: item.image,
                                 }}
-                                onFavAdd={() => addToFavorites(item)}
+                                plot={item.plot}
+                                //  plot={movieDetail?.data.plot}
+                                onCardPress={() => openMovieModal(item.id)}
+                                onFavAdd={() => {
+                                    addToFavorites(item);
+                                }}
                                 onWatchPress={() => addToWatch(item)}
                             />
                         );

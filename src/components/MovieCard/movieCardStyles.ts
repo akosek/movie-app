@@ -24,8 +24,16 @@ const styles = StyleSheet.create({
     infoBox: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        padding: 8,
+    },
+    plotText: {
+        paddingHorizontal: 4,
+        marginTop: 8,
     },
     movieTitle: {
+        marginTop: 6,
+        paddingHorizontal: 2,
+        fontWeight: 'bold',
         textAlign: 'center',
     },
     overlayStyle: {

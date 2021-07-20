@@ -1,7 +1,5 @@
 import React from 'react';
-
 import { SafeAreaView, ScrollView, View } from 'react-native';
-import CustomText, { TextTypes } from '../components/CustomText';
 
 // Redux
 import { useSelector } from 'react-redux';
