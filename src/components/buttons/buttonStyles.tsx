@@ -7,10 +7,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         backgroundColor: 'white',
-        //    borderWidth: 0.5,
+        borderWidth: 0.5,
         borderRadius: 100,
-        width: 55,
-        height: 55,
+        width: 60,
+        height: 60,
     },
     labelText: {
         textAlign: 'center',

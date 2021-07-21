@@ -32,13 +32,13 @@ export default function MovieCard(props: Props) {
         props.onCardPress ? props.onCardPress() : null;
     };
 
+    const markAsWatched = () => {
+        setVisible(false);
+        props.onCheckedAdd ? props.onCheckedAdd() : null;
+    };
+
     return (
-        <View style={{ position: 'relative' }}>
-            <IconButton
-                icon={'shield-checkmark-outline'}
-                label={'Watched'}
-                style={{ position: 'absolute', top: -8, right: 0, zIndex: 10 }}
-            />
+        <View>
             <TouchableOpacity
                 style={styles.movieCard}
                 onPress={() => {
@@ -56,6 +56,13 @@ export default function MovieCard(props: Props) {
                 </View>
             </TouchableOpacity>
             <Overlay isVisible={visible} onBackdropPress={toogleOverlay} overlayStyle={styles.overlayStyle}>
+                <IconButton
+                    icon={'shield-checkmark-outline'}
+                    label={'Watched'}
+                    style={styles.iconButton}
+                    onPress={markAsWatched}
+                    size={24}
+                />
                 <View style={styles.overlayInfo}>
                     <Image source={props.image} style={styles.overlayImage} />
                     <View style={styles.overlayDetail}>
@@ -64,25 +71,15 @@ export default function MovieCard(props: Props) {
                     </View>
                 </View>
                 <Text style={styles.plotText}>{props.plot}</Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    {props.onCheckedAdd ? (
-                        <Button
-                            title="I watched it"
-                            type="clear"
-                            onLongPress={props.onCheckedAdd}
-                            onPress={props.onCheckedAdd}
-                            icon={
-                                <Icon name="shield-checkmark-outline" type="ionicon" size={30} color="blue" style={{ marginRight: 15 }} />
-                            }
-                        />
-                    ) : null}
+                <View style={{ justifyContent: 'center', padding: 12 }}>
                     {props.onWatchPress ? (
                         <Button
                             onLongPress={props.onWatchPress}
                             onPress={props.onWatchPress}
                             icon={{
-                                name: 'arrow-right',
-                                size: 15,
+                                name: 'add-circle-outline',
+                                type: 'ionicon',
+                                size: 20,
                                 color: 'blue',
                             }}
                             title={props.isInWatchlist ? 'Remove from watchlist' : 'Add to watchlist'}

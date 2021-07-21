@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
     },
     plotText: {
         paddingHorizontal: 4,
-        marginTop: 8,
+        marginBottom: 6,
+        marginTop: 12,
     },
     movieTitle: {
         marginTop: 6,
@@ -39,9 +40,19 @@ const styles = StyleSheet.create({
     },
     overlayStyle: {
         width: 340,
+        position: 'relative',
+    },
+    iconButton: {
+        position: 'absolute',
+        top: -26,
+        right: -6,
+        zIndex: 10,
     },
     overlayInfo: {
         flexDirection: 'row',
+        marginTop: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     overlayDetail: {
         flex: 3,
