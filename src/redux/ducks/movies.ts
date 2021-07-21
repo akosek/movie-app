@@ -6,16 +6,18 @@ import axios from 'axios';
 
 // Action Creators
 export const setTopMovies = createAction('setTopMovies/SET_TOP_MOVIES')<TMovieItem[]>();
-export const addFavMovies = createAction('addFavMovies/ADD_FAV_MOVIES')<TMovieDetails>();
+export const addCheckedMovie = createAction('addCheckedMovie/ADD_CHECKED_MOVIES')<TMovieDetails>();
 export const removeFromFav = createAction('removeFromFav/REMOVE_FROM_FAV')<TMovieItem>();
 export const addToWatchList = createAction('addToWatchList/ADD_TO_WATCHLIST')<TMovieItem>();
 export const setMovieDetails = createAction('setMovieDetails/SET_MOVIE_DETAILS')<TMovieDetails>();
+export const removeFromWatchlist = createAction('removeFromWatchlist/REMOVE_FROM_WATCHLIST')<TMovieItem>();
 
 const actionCreators = {
     setTopMovies,
-    addFavMovies,
+    addCheckedMovie,
     removeFromFav,
     addToWatchList,
+    removeFromWatchlist,
     setMovieDetails,
 };
 
@@ -23,14 +25,14 @@ const actionCreators = {
 export type TMoviesState = Readonly<{
     movieList: TMovieItem[];
     movieFav: TMovieDetails;
-    movieFavList: TMovieDetails[];
+    movieCheckedList: TMovieDetails[];
     movieWatchList: TMovieDetails[];
     movieDetail: TMovieDetails;
 }>;
 
 const initialState: TMoviesState = {
     movieList: [],
-    movieFavList: [],
+    movieCheckedList: [],
     movieWatchList: [],
     movieFav: {
         id: '',
@@ -58,12 +60,12 @@ export default function reducer(state: TMoviesState = initialState, action: TMov
     switch (action.type) {
         case getType(setTopMovies):
             return { ...state, movieList: action.payload };
-        case getType(addFavMovies):
-            return { ...state, movieFavList: [...state.movieFavList, action.payload] };
+        case getType(addCheckedMovie):
+            return { ...state, movieCheckedList: [...state.movieCheckedList, action.payload] };
         case getType(removeFromFav):
             return {
                 ...state,
-                movieFavList: state.movieFavList.filter((movie: TMovieItem) => movie.id !== action.payload.id),
+                movieCheckedList: state.movieCheckedList.filter((movie: TMovieItem) => movie.id !== action.payload.id),
             };
         case getType(addToWatchList):
             return { ...state, movieWatchList: [...state.movieWatchList, action.payload] };
@@ -71,6 +73,11 @@ export default function reducer(state: TMoviesState = initialState, action: TMov
             return {
                 ...state,
                 movieDetail: action.payload,
+            };
+        case getType(removeFromWatchlist):
+            return {
+                ...state,
+                movieWatchList: state.movieWatchList.filter((movie: TMovieItem) => movie.id !== action.payload.id),
             };
         default:
             return state;

@@ -27,6 +27,15 @@ const TabNavigator = () => {
             <Tab.Screen
                 listeners={() => ({ tabPress: onPressTab })}
                 options={{
+                    tabBarLabel: tabLabels.SECOND_SCREEN,
+                    tabBarIcon: ({ color, size }) => <Icon name="shield-checkmark-outline" type="ionicon" color={color} size={size} />,
+                }}
+                name={ROUTES.SECOND_SCREEN_STACK}
+                component={SecondScreenStack}
+            />
+            <Tab.Screen
+                listeners={() => ({ tabPress: onPressTab })}
+                options={{
                     tabBarLabel: tabLabels.FIRST_SCREEN,
                     tabBarIcon: ({ color, size }) => <Icon name="flame-outline" type="ionicon" color={color} size={size} />,
                 }}
@@ -41,15 +50,6 @@ const TabNavigator = () => {
                 }}
                 name={ROUTES.THIRD_SCREEN_STACK}
                 component={SygdomDoedStack}
-            />
-            <Tab.Screen
-                listeners={() => ({ tabPress: onPressTab })}
-                options={{
-                    tabBarLabel: tabLabels.SECOND_SCREEN,
-                    tabBarIcon: ({ color, size }) => <Icon name="heart-outline" type="ionicon" color={color} size={size} />,
-                }}
-                name={ROUTES.SECOND_SCREEN_STACK}
-                component={SecondScreenStack}
             />
         </Tab.Navigator>
     );

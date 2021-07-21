@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
 
 // Redux
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { TMovieItem } from '../redux/ducks/movies';
 import { RootState } from '../redux/rootReducer';
 
@@ -10,8 +10,17 @@ import { RootState } from '../redux/rootReducer';
 import MovieCard from '../components/MovieCard/MovieCard';
 import styles from './firstScreenStyles';
 
+import { removeFromWatchlist, addCheckedMovie } from '../redux/ducks/movies';
+
 export function FourthScreen(): React.ReactElement {
     const { movieWatchList } = useSelector<RootState, TMovieItem[]>((state) => state.movies);
+
+    const dispatch = useDispatch();
+
+    const removeFromList = (item: TMovieItem) => {
+        dispatch(removeFromWatchlist(item));
+        dispatch(addCheckedMovie(item));
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -29,8 +38,7 @@ export function FourthScreen(): React.ReactElement {
                                 image={{
                                     uri: item.image,
                                 }}
-                                //onFavAdd={() => addToFavorites(item)}
-                                onWatchPress={() => console.log('my watchlist', movieWatchList)}
+                                onCheckedAdd={() => removeFromList(item)}
                             />
                         );
                     })}

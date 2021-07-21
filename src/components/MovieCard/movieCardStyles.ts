@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
         width: 160,
         height: 190,
         backgroundColor: 'white',
-        margin: 8,
+        marginBottom: 24,
+        marginHorizontal: 6,
         borderRadius: 16,
     },
     coverImage: {

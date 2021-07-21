@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // UI & Styles
-import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import MovieCard from '../components/MovieCard/MovieCard';
 import styles from './firstScreenStyles';
 
@@ -9,7 +9,7 @@ import styles from './firstScreenStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import { TMovieItem, TMovieDetails } from '../redux/ducks/movies';
 import { RootState } from '../redux/rootReducer';
-import { getTopMovieData, addFavMovies, addToWatchList, getMovieDetails } from '../redux/ducks/movies';
+import { getTopMovieData, addCheckedMovie, addToWatchList, getMovieDetails, removeFromWatchlist } from '../redux/ducks/movies';
 
 //TEMPORARY
 const testData: any[] = [
@@ -90,12 +90,13 @@ export function FirstScreen(): React.ReactElement {
     }, []);
 
     const addToFavorites = (item: TMovieItem) => {
-        dispatch(addFavMovies(item));
-        console.log('added Fav item', item);
+        dispatch(addCheckedMovie(item));
+        Alert.alert('Movie marked as watched');
     };
 
     const addToWatch = (item: TMovieItem) => {
         dispatch(addToWatchList(item));
+        Alert.alert('Movie added to yoour watch list');
     };
 
     const openMovieModal = (id: string) => {
@@ -120,12 +121,15 @@ export function FirstScreen(): React.ReactElement {
                                     uri: item.image,
                                 }}
                                 plot={item.plot}
-                                //  plot={movieDetail?.data.plot}
-                                onCardPress={() => openMovieModal(item.id)}
-                                onFavAdd={() => {
+                                //plot={movieDetail?.data.plot}
+                                onCardPress={() => {
+                                    openMovieModal(item.id);
+                                }}
+                                onCheckedAdd={() => {
                                     addToFavorites(item);
                                 }}
                                 onWatchPress={() => addToWatch(item)}
+                                //  isInWatchlist={checkWatchList(item)}
                             />
                         );
                     })}

@@ -28,7 +28,7 @@ export function ThirdScreen(): React.ReactElement {
                         image={{
                             uri: item.image,
                         }}
-                        //onFavAdd={() => addToFavorites(item)}
+                        //onCheckedAdd={() => addToFavorites(item)}
                         onWatchPress={() => console.log('my watchlist', movieWatchList)}
                     />;
                 })}
