@@ -24,12 +24,15 @@ export function FourthScreen(): React.ReactElement {
             Alert.alert(`${item.title} was added to your watched collection`);
         }, 300);
     };
+    const modifiedList = movieWatchList.filter(function (value, index, movieWatchList) {
+        return movieWatchList.indexOf(value) === index;
+    });
 
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
             <ScrollView>
                 <View style={styles.movieList}>
-                    {movieWatchList?.map((item, key) => {
+                    {modifiedList?.map((item, key) => {
                         return (
                             <MovieCard
                                 id={item.id}

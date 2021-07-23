@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 // UI & Styles
-import { SafeAreaView, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { SafeAreaView, View, ScrollView, Alert } from 'react-native';
 import MovieCard from '../components/MovieCard/MovieCard';
 import styles from './firstScreenStyles';
 
@@ -14,16 +14,11 @@ import { getTopMovieData, addCheckedMovie, addToWatchList, getMovieDetails, remo
 
 export function FirstScreen(): React.ReactElement {
     const movieList = useSelector<RootState, TMovieItem[]>((state) => state.movies.movieList);
-    const movieWatchList = useSelector<RootState, TMovieItem[]>((state) => state.movies.movieWatchList);
-    const movieCheckedList = useSelector<RootState, TMovieDetails[]>((state) => state.movies.movieCheckedList);
     const movieDetail = useSelector<RootState, TMovieDetails>((state) => state.movies.movieDetail);
     const isFetchingDetails = useSelector<RootState, boolean>((state) => state.movies.isLoading);
 
     const dispatch = useDispatch();
 
-    let freshMovieList = [];
-
-    let array3 = [];
     const fetchData = () => {
         dispatch(getTopMovieData());
     };

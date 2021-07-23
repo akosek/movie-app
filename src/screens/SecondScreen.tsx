@@ -1,30 +1,25 @@
 import React from 'react';
 
 // UI & Styles
-import { SafeAreaView, ScrollView, View, Text } from 'react-native';
-import MovieCard from '../components/MovieCard/MovieCard';
+import { ScrollView, View, Text } from 'react-native';
 import { ListItem, Avatar, Icon } from 'react-native-elements';
-import styles from './firstScreenStyles';
 
 // REDUX
 import { RootState } from '../redux/rootReducer';
 import { TMovieItem } from '../redux/ducks/movies';
-import { useSelector, useDispatch } from 'react-redux';
-import { removeFromChecked } from '../redux/ducks/movies';
+import { useSelector } from 'react-redux';
 
 export function SecondScreen(): React.ReactElement {
-    const { movieCheckedList } = useSelector<RootState, TMovieItem[]>((state) => state.movies);
+    const movieCheckedList = useSelector<RootState, TMovieItem[]>((state) => state.movies.movieCheckedList);
 
-    const dispatch = useDispatch();
-
-    const removeMovie = (item: TMovieItem) => {
-        dispatch(removeFromChecked(item));
-    };
+    const modifiedList = movieCheckedList.filter(function (value, index, movieCheckedList) {
+        return movieCheckedList.indexOf(value) === index;
+    });
 
     return (
         <ScrollView>
             <View>
-                {movieCheckedList?.map((item: TMovieItem, key) => (
+                {modifiedList?.map((item: TMovieItem, key) => (
                     <ListItem key={key} bottomDivider>
                         <Avatar source={{ uri: item.image }} />
                         <ListItem.Content>
