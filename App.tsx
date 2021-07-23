@@ -15,25 +15,6 @@ import { CustomFonts } from './src/config/fonts';
 // Components
 import UpdateChecker from './src/utils/UpdateChecker';
 
-// var options = {
-//     method: 'GET',
-//     url: 'https://movie-database-imdb-alternative.p.rapidapi.com/',
-//     params: { i: 'tt4154796', type: 'comedy', r: 'json' },
-//     headers: {
-//         'x-rapidapi-key': 'e7ef204eebmsh450238a0e035542p1a81c7jsn1eb21e103a71',
-//         'x-rapidapi-host': 'movie-database-imdb-alternative.p.rapidapi.com',
-//     },
-// };
-//
-// axios
-//     .request(options)
-//     .then(function (response) {
-//         console.log(response.data);
-//     })
-//     .catch(function (error) {
-//         console.error(error);
-//     });
-
 const _loadAssetsAsync = async () => {
     // Load fonts
     await Font.loadAsync(CustomFonts);

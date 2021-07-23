@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // UI & Styles
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { Button, Overlay, Icon } from 'react-native-elements';
 import IconButton from './../buttons/IconButton';
 import styles from './movieCardStyles';
@@ -17,7 +17,7 @@ export type Props = {
     onCheckedAdd?: () => void;
     onWatchPress?: () => void;
     onCardPress?: () => void;
-    isInWatchlist?: boolean;
+    isFetching?: boolean;
 };
 
 export default function MovieCard(props: Props) {
@@ -39,12 +39,7 @@ export default function MovieCard(props: Props) {
 
     return (
         <View>
-            <TouchableOpacity
-                style={styles.movieCard}
-                onPress={() => {
-                    pressCard();
-                }}
-            >
+            <TouchableOpacity style={styles.movieCard} onPress={() => pressCard()}>
                 <Image source={props.image} resizeMode="cover" style={styles.coverImage} />
                 <Text style={styles.movieTitle}>{props.title}</Text>
                 <View style={styles.infoBox}>
@@ -70,14 +65,15 @@ export default function MovieCard(props: Props) {
                         <Text>{props.crew}</Text>
                     </View>
                 </View>
-                <Text style={styles.plotText}>{props.plot}</Text>
-                <View style={{ justifyContent: 'center', padding: 12 }}>
+                {props.isFetching ? <ActivityIndicator /> : <Text style={styles.plotText}>{props.plot}</Text>}
+
+                <View style={styles.buttonRow}>
                     {props.onWatchPress ? (
                         <Button
                             onLongPress={props.onWatchPress}
                             onPress={props.onWatchPress}
                             icon={{
-                                name: 'add-circle-outline',
+                                name: 'add-outline',
                                 type: 'ionicon',
                                 size: 20,
                                 color: 'blue',

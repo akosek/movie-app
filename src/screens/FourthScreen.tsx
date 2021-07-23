@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { SafeAreaView, ScrollView, View, Alert } from 'react-native';
 
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,17 +13,20 @@ import styles from './firstScreenStyles';
 import { removeFromWatchlist, addCheckedMovie } from '../redux/ducks/movies';
 
 export function FourthScreen(): React.ReactElement {
-    const { movieWatchList } = useSelector<RootState, TMovieItem[]>((state) => state.movies);
+    const movieWatchList = useSelector<RootState, TMovieItem[]>((state) => state.movies.movieWatchList);
 
     const dispatch = useDispatch();
 
     const removeFromList = (item: TMovieItem) => {
         dispatch(removeFromWatchlist(item));
         dispatch(addCheckedMovie(item));
+        setTimeout(() => {
+            Alert.alert(`${item.title} was added to your watched collection`);
+        }, 300);
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
             <ScrollView>
                 <View style={styles.movieList}>
                     {movieWatchList?.map((item, key) => {

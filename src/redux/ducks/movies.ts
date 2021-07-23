@@ -1,33 +1,36 @@
 import { createAction, ActionType, getType } from 'typesafe-actions';
-import { API_URL_TOP, API_URL_POPULAR, MOVIE_DETAILS } from '../../api';
+import { API_URL_TOP, API_URL_POPULAR, MOVIE_DETAILS, API_URL_THEATERS } from '../../api';
 import { AppThunk } from '../../types';
 
 import axios from 'axios';
 
 // Action Creators
 export const setTopMovies = createAction('setTopMovies/SET_TOP_MOVIES')<TMovieItem[]>();
-export const addCheckedMovie = createAction('addCheckedMovie/ADD_CHECKED_MOVIES')<TMovieDetails>();
-export const removeFromFav = createAction('removeFromFav/REMOVE_FROM_FAV')<TMovieItem>();
+export const addCheckedMovie = createAction('addCheckedMovie/ADD_CHECKED_MOVIES')<TMovieItem>();
+export const removeFromChecked = createAction('removeFromChecked/REMOVE_FROM_CHECKED')<TMovieItem>();
 export const addToWatchList = createAction('addToWatchList/ADD_TO_WATCHLIST')<TMovieItem>();
 export const setMovieDetails = createAction('setMovieDetails/SET_MOVIE_DETAILS')<TMovieDetails>();
 export const removeFromWatchlist = createAction('removeFromWatchlist/REMOVE_FROM_WATCHLIST')<TMovieItem>();
+export const setIsLoading = createAction('SetIsloading/SET_IS_LOADING')<boolean>();
 
 const actionCreators = {
     setTopMovies,
     addCheckedMovie,
-    removeFromFav,
+    removeFromChecked,
     addToWatchList,
     removeFromWatchlist,
     setMovieDetails,
+    setIsLoading,
 };
 
 // Inistial state
 export type TMoviesState = Readonly<{
     movieList: TMovieItem[];
     movieFav: TMovieDetails;
-    movieCheckedList: TMovieDetails[];
+    movieCheckedList: TMovieItem[];
     movieWatchList: TMovieDetails[];
     movieDetail: TMovieDetails;
+    isLoading: boolean;
 }>;
 
 const initialState: TMoviesState = {
@@ -61,8 +64,11 @@ export default function reducer(state: TMoviesState = initialState, action: TMov
         case getType(setTopMovies):
             return { ...state, movieList: action.payload };
         case getType(addCheckedMovie):
-            return { ...state, movieCheckedList: [...state.movieCheckedList, action.payload] };
-        case getType(removeFromFav):
+            return {
+                ...state,
+                movieCheckedList: [...state.movieCheckedList, action.payload],
+            };
+        case getType(removeFromChecked):
             return {
                 ...state,
                 movieCheckedList: state.movieCheckedList.filter((movie: TMovieItem) => movie.id !== action.payload.id),
@@ -78,6 +84,11 @@ export default function reducer(state: TMoviesState = initialState, action: TMov
             return {
                 ...state,
                 movieWatchList: state.movieWatchList.filter((movie: TMovieItem) => movie.id !== action.payload.id),
+            };
+        case getType(setIsLoading):
+            return {
+                ...state,
+                isLoading: action.payload,
             };
         default:
             return state;
@@ -103,10 +114,12 @@ export const getMovieDetails = (id: string): AppThunk => {
     return function (dispatch) {
         let url = `${MOVIE_DETAILS}` + `${id}`;
         let options: { method: string; url: string } = { method: 'GET', url: url };
+        dispatch(setIsLoading(true));
         axios
             .request(options)
             .then(function (response) {
                 dispatch(setMovieDetails(response));
+                dispatch(setIsLoading(false));
             })
             .catch(function (error) {
                 console.log(error);

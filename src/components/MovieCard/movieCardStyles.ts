@@ -64,6 +64,10 @@ const styles = StyleSheet.create({
         marginBottom: 3,
         fontWeight: 'bold',
     },
+    buttonRow: {
+        justifyContent: 'center',
+        padding: 12,
+    },
 });
 
 export default styles;
